@@ -62,6 +62,12 @@ body {
 .terminal-caret {
   animation: blink-caret 1s step-end infinite;
 }
+@media (prefers-reduced-motion: reduce) {
+  .terminal-caret {
+    animation: none;
+    opacity: 1;
+  }
+}
 
 /* Focus ring — visible, on-brand, never removed without replacement */
 :focus-visible {

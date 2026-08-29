@@ -15,6 +15,12 @@ const JourneyDesktop = dynamic(() => import('./JourneyDesktop').then((m) => m.Jo
 
 export function Journey() {
   const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+  // Once the desktop (GSAP-pinned) variant has been mounted for the first
+  // time, it stays mounted permanently and is only ever hidden/shown via
+  // CSS from then on — see JourneyDesktop.tsx for why. Pure-mobile visitors
+  // who never cross the breakpoint still never pay JourneyDesktop's GSAP
+  // bundle cost, since it only mounts the first time isDesktop becomes true.
+  const [hasMountedDesktop, setHasMountedDesktop] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 900px)');
@@ -23,6 +29,10 @@ export function Journey() {
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, []);
+
+  useEffect(() => {
+    if (isDesktop) setHasMountedDesktop(true);
+  }, [isDesktop]);
 
   return (
     <section id="journey" className="relative py-32">
@@ -37,12 +47,19 @@ export function Journey() {
       </div>
 
       <div className="mt-14">
-        {isDesktop === null ? null : isDesktop ? (
-          <JourneyDesktop />
-        ) : (
-          <div className="px-6 md:px-12">
-            <JourneyMobile />
-          </div>
+        {isDesktop === null ? null : (
+          <>
+            {hasMountedDesktop && (
+              <div className={isDesktop ? '' : 'hidden'}>
+                <JourneyDesktop enabled={isDesktop} />
+              </div>
+            )}
+            {!isDesktop && (
+              <div className="px-6 md:px-12">
+                <JourneyMobile />
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>
