@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { SITE_URL, SOCIAL_IMAGE_PATH } from '@/lib/siteConfig';
 
-const TITLE = 'Dweep Solanki — Software, Security, AI & Product';
+const TITLE = 'Dweep Solanki — Software Engineer · Cybersecurity · AI · Product';
 const DESCRIPTION =
   'Dweep Solanki builds technology at the intersection of software, security, AI and real-world problems.';
 

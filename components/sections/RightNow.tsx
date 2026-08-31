@@ -5,10 +5,10 @@ import { Reveal } from '@/components/motion/Reveal';
 import { Stagger, StaggerItem } from '@/components/motion/Stagger';
 
 const STATUS_ITEMS = [
-  { label: 'WORKING AT', value: 'YellowSense Technologies' },
+  { label: 'STATUS', value: 'Looking to join a new team' },
   { label: 'EXPLORING', value: 'New opportunities' },
-  { label: 'INTERESTED IN', value: 'Software · Cybersecurity · Product · AI' },
-  { label: 'OPEN TO', value: 'Meaningful engineering and product challenges' },
+  { label: 'OPEN TO', value: 'Software Engineering · Cybersecurity · Product · AI' },
+  { label: 'INTERESTED IN', value: 'Meaningful engineering and product challenges' },
 ];
 
 export function RightNow() {
