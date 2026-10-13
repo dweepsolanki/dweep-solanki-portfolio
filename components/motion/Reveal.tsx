@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import type { ReactNode } from 'react';
 
 interface RevealProps {
@@ -28,10 +29,13 @@ export function Reveal({
   as = 'div',
   amount = 0.2,
 }: RevealProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
   const MotionTag = motion[as];
 
   if (reduceMotion) {
+    // The mask variant is used inline inside <h1>/<h2>, so it must stay a
+    // span here too — a div inside a heading is invalid HTML.
+    if (variant === 'mask') return <span className={`inline-block ${className}`}>{children}</span>;
     return <MotionTag className={className}>{children}</MotionTag>;
   }
 

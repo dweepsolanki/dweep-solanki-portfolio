@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion, type MotionValue } from 'framer-motion';
+import { motion, type MotionValue } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 
 interface ScrollProgressBarProps {
   scrollYProgress: MotionValue<number>;
@@ -21,7 +22,7 @@ interface ScrollProgressBarProps {
  * scroll-linked elements.
  */
 export function ScrollProgressBar({ scrollYProgress }: ScrollProgressBarProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
   if (reduceMotion) return null;
 
   return (

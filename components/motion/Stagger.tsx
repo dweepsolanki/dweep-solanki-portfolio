@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import type { ReactNode } from 'react';
 
 const easeEditorial = [0.16, 1, 0.3, 1] as const;
@@ -21,7 +22,7 @@ const container = (staggerDelay: number) => ({
 });
 
 export function Stagger({ children, className = '', staggerDelay = 60, amount = 0.2 }: StaggerProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
 
   if (reduceMotion) {
     return <div className={className}>{children}</div>;
@@ -51,7 +52,7 @@ const item = {
 };
 
 export function StaggerItem({ children, className = '' }: StaggerItemProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
   if (reduceMotion) {
     return <div className={className}>{children}</div>;
   }

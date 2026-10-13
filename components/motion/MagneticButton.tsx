@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import type { ReactNode, MouseEvent } from 'react';
 
 interface MagneticButtonProps {
@@ -31,7 +32,7 @@ export function MagneticButton({
   title,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 
 /**
  * Faint background grid in the hero that bends very slightly toward the
@@ -11,7 +11,7 @@ import { useReducedMotion } from 'framer-motion';
  */
 export function GridDistort() {
   const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
   const frame = useRef<number>();
 
   useEffect(() => {

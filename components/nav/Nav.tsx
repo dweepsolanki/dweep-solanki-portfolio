@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, useTransform, type MotionValue } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useTransform, type MotionValue } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 
 interface NavProps {
   onOpenTerminal: () => void;
@@ -35,6 +36,10 @@ const SECTION_IDS = LINKS.map((l) => l.href.slice(1));
  */
 export function Nav({ onOpenTerminal, scrollY }: NavProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const reduceMotion = useReducedMotionSafe();
   const backdropOpacity = useTransform(scrollY, [0, 120], [0, 1]);
 
   useEffect(() => {
@@ -57,6 +62,29 @@ export function Nav({ onOpenTerminal, scrollY }: NavProps) {
     sections.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
+
+  // Mobile menu: close on Escape (returning focus to the toggle) or on a
+  // tap anywhere outside the menu and its toggle.
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    }
+    function handlePointerDown(e: PointerEvent) {
+      const target = e.target as Node;
+      if (menuRef.current?.contains(target) || menuButtonRef.current?.contains(target)) return;
+      setMenuOpen(false);
+    }
+    document.addEventListener('keydown', handleKey);
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
+  }, [menuOpen]);
 
   return (
     <motion.header
@@ -93,14 +121,66 @@ export function Nav({ onOpenTerminal, scrollY }: NavProps) {
         })}
       </nav>
 
-      <button
-        type="button"
-        onClick={onOpenTerminal}
-        className="font-mono text-[11px] tracking-[0.1em] text-ink-faint transition-colors duration-150 hover:text-lime"
-        aria-haspopup="dialog"
-      >
-        ~/dweep
-      </button>
+      <div className="flex items-center gap-5">
+        <button
+          type="button"
+          onClick={onOpenTerminal}
+          className="font-mono text-[11px] tracking-[0.1em] text-ink-faint transition-colors duration-150 hover:text-lime"
+          aria-haspopup="dialog"
+        >
+          ~/dweep
+        </button>
+        <button
+          ref={menuButtonRef}
+          type="button"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav"
+          className="-my-2 py-2 font-mono text-[11px] tracking-[0.1em] text-ink transition-colors duration-150 hover:text-lime md:hidden"
+        >
+          {menuOpen ? 'CLOSE' : 'MENU'}
+        </button>
+      </div>
+
+      {/* Mobile menu — the desktop link row above is hidden below md, so
+          without this, phone visitors had no way to jump between sections. */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav
+            id="mobile-nav"
+            ref={menuRef}
+            aria-label="Sections"
+            initial={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-x-0 top-full border-b border-ink/10 bg-graphite/95 px-6 pb-6 pt-2 backdrop-blur-md md:hidden"
+          >
+            <ul className="flex flex-col">
+              {LINKS.map((link) => {
+                const isActive = activeId === link.href.slice(1);
+                return (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      onClick={() => setMenuOpen(false)}
+                      aria-current={isActive ? 'location' : undefined}
+                      className={`flex items-center justify-between border-b border-ink/5 py-4 font-mono text-xs tracking-[0.12em] transition-colors duration-150 hover:text-lime ${
+                        isActive ? 'text-lime' : 'text-ink'
+                      }`}
+                    >
+                      {link.label}
+                      <span className="text-ink-faint" aria-hidden="true">
+                        →
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

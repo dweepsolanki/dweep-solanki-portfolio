@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import { X } from 'lucide-react';
 import { useTerminalCommands, type TerminalOutputLine } from './useTerminalCommands';
 import { TerminalLine } from './TerminalLine';
@@ -23,7 +24,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
   const [bootedLines, setBootedLines] = useState<TerminalOutputLine[]>([]);
   const [bootComplete, setBootComplete] = useState(false);
   const [input, setInput] = useState('');
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);

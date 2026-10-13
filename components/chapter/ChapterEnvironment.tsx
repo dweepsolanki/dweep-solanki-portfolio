@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo } from 'react';
-import { motion, useTransform, useReducedMotion, type MotionValue } from 'framer-motion';
+import { motion, useTransform, type MotionValue } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import { chapterWaypoints } from '@/lib/chapters';
 
 interface ChapterEnvironmentProps {
@@ -23,7 +24,7 @@ interface ChapterEnvironmentProps {
  * a simple opacity cross-fade instead of continuous interpolation, per §3.6.
  */
 export function ChapterEnvironment({ scrollYProgress }: ChapterEnvironmentProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
 
   const progressInput = useMemo(() => chapterWaypoints.map((w) => w.progress), []);
   const backgroundOutput = useMemo(() => chapterWaypoints.map((w) => w.background), []);

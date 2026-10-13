@@ -6,6 +6,16 @@ import Image from 'next/image';
 import { X, Linkedin } from 'lucide-react';
 import type { ThinkingPost } from '@/data/thinkingPosts';
 
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+// "2026-03-19" → "MAR 19, 2026". Parsed by hand rather than via Date so the
+// output never shifts with the viewer's timezone or locale.
+function formatPostDate(iso: string) {
+  const [year, month, day] = iso.split('-').map(Number);
+  if (!year || !month || !day) return iso;
+  return `${MONTHS[month - 1]} ${day}, ${year}`;
+}
+
 interface ThinkingExpandedPanelProps {
   post: ThinkingPost | null;
   onClose: () => void;
@@ -127,7 +137,7 @@ export function ThinkingExpandedPanel({ post, onClose }: ThinkingExpandedPanelPr
                 {post.date && (
                   <>
                     <span aria-hidden="true">·</span>
-                    <span>{post.date}</span>
+                    <time dateTime={post.date}>{formatPostDate(post.date)}</time>
                   </>
                 )}
               </motion.div>

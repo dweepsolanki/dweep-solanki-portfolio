@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useTransform, useReducedMotion, type MotionValue } from 'framer-motion';
+import { motion, useTransform, type MotionValue } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import Image from 'next/image';
 import type { KeyboardEvent } from 'react';
 import type { ThinkingPost } from '@/data/thinkingPosts';
@@ -28,7 +29,7 @@ interface ThinkingCardProps {
  * the same interaction language as opening a case study, not a new pattern.
  */
 export function ThinkingCard({ post, onOpen, scrollYProgress, parallaxFactor = 1 }: ThinkingCardProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
 
   function handleKeyDown(e: KeyboardEvent<HTMLDivElement>) {
     if (e.key === 'Enter' || e.key === ' ') {

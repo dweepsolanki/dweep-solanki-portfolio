@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useInView, useReducedMotion, animate } from 'framer-motion';
+import { useInView, animate } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 
 interface CountUpProps {
   value: number;
@@ -18,11 +19,15 @@ interface CountUpProps {
 export function CountUp({ value, suffix = '', duration = 0.9, className = '' }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
-  const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState(reduceMotion ? value : 0);
+  const reduceMotion = useReducedMotionSafe();
+  const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    if (!inView || reduceMotion) return;
+    if (reduceMotion) {
+      setDisplay(value);
+      return;
+    }
+    if (!inView) return;
     const controls = animate(0, value, {
       duration,
       ease: [0.16, 1, 0.3, 1],

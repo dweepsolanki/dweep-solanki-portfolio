@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import { ChapterMarker } from '@/components/chapter/ChapterMarker';
 import { MagneticButton } from '@/components/motion/MagneticButton';
 import { GridDistort } from '@/components/motion/GridDistort';
@@ -11,7 +12,7 @@ const KEYWORDS = ['ENGINEER', 'BUILDER', 'SECURITY', 'AI', 'PRODUCT', 'STARTUPS'
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);

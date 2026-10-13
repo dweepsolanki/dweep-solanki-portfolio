@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import { ChapterMarker } from '@/components/chapter/ChapterMarker';
 import { Reveal } from '@/components/motion/Reveal';
 import { beyondCards } from '@/data/beyondCards';
@@ -35,7 +36,7 @@ function BeyondCardItem({
   card: (typeof beyondCards)[number];
   scrollYProgress: ReturnType<typeof useScroll>['scrollYProgress'];
 }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
   // Restrained scroll-linked depth (spec §4.7) — collapses to a shared,
   // simpler factor on mobile per §9; desktop gets per-card variation.
   const depthY = useTransform(scrollYProgress, [0, 1], [`${(card.parallaxFactor - 1) * -40}px`, `${(card.parallaxFactor - 1) * 40}px`]);

@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import Image from 'next/image';
 
 const IMAGE_SRC = '/images/personal/dweep-solanki.png';
@@ -26,7 +27,7 @@ const ASPECT = '1320 / 1366';
  */
 export function PersonalReveal() {
   const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const parallaxY = useTransform(scrollYProgress, [0, 1], ['-3%', '3%']);
 
