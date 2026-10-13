@@ -17,12 +17,20 @@ import { useReducedMotion } from 'framer-motion';
  * rendered — and only then switches to the real preference. Use it
  * everywhere instead of importing useReducedMotion directly (enforced by
  * the no-restricted-imports rule in .eslintrc.json).
+ *
+ * The delay only matters during the initial hydration. Components that
+ * mount later (e.g. dialog contents opened by a click) have no server HTML
+ * to match, so they read the real preference on their first render —
+ * otherwise their mount animations would still play for reduced-motion users.
  */
+let hasHydrated = false;
+
 export function useReducedMotionSafe(): boolean {
   const prefersReducedMotion = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(hasHydrated);
 
   useEffect(() => {
+    hasHydrated = true;
     setMounted(true);
   }, []);
 

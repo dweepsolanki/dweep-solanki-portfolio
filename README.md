@@ -64,7 +64,8 @@ lib/
 
 | Task | Where |
 |---|---|
-| Add or edit a project | `data/projects.ts`. Pick a `treatment` from the existing union; `ProjectTreatment.tsx` handles the visual. Put the image in `public/images/projects/`. |
+| Add or edit a project | `data/projects.ts`. Put the image in `public/images/projects/`. For the expanded panel, use `treatment: 'diagram'` with a `diagram` (rendered by `ProjectDiagram.tsx`), or `'redacted'` / `'quiet'`. |
+| Update a "How it works" diagram | The `diagram` on that project in `data/projects.ts`. Each one is mapped from the project's public repository (the source files are named in a comment above it) — re-check against the code when the repo changes, and don't describe anything the code doesn't do. |
 | Add a LinkedIn post | `data/thinkingPosts.ts`. See the comment there for how `date` is decoded from the post URL. |
 | Change a chapter's color | `lib/chapters.ts` only. |
 | Add a new chapter | Add the section with an `id`, then add a waypoint in `lib/chapters.ts` with that id as `sectionId`. |
@@ -121,4 +122,5 @@ There's no automated test suite. Before a release, check at least: the site in a
 - **Google post excerpt** in `data/thinkingPosts.ts` is a neutral placeholder built only from the post's hashtags. Replace it with the post's real summary.
 - **Thinking post excerpts** in general are conservative summaries, not quotes — LinkedIn blocks automated fetching of post text, so none were copied.
 - **Cross-browser:** the GSAP-pinned Journey timeline has been tested in Chromium only; check Safari and Firefox with a real trackpad before major releases.
+- **SecureShareVault is a prototype:** its post-quantum step is simulated in the repository (`kyberMock`; the file key is stored unwrapped) and it encrypts with AES-256-CBC. The card and diagram say so. If the repo gains real ML-KEM key encapsulation and AES-GCM, update its `footerNote` and the "Wrap the key" step.
 - **Social card font:** `opengraph-image.tsx` uses the image renderer's built-in font (regular weight only). Embedding Inter as a TTF would let the name render bold.
