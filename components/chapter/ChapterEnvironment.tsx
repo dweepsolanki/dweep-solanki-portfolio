@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion, useTransform, type MotionValue } from 'framer-motion';
 import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
-import { chapterWaypoints } from '@/lib/chapters';
+import { chapterWaypoints, measureWaypointProgress } from '@/lib/chapters';
 
 interface ChapterEnvironmentProps {
   scrollYProgress: MotionValue<number>;
@@ -26,7 +26,32 @@ interface ChapterEnvironmentProps {
 export function ChapterEnvironment({ scrollYProgress }: ChapterEnvironmentProps) {
   const reduceMotion = useReducedMotionSafe();
 
-  const progressInput = useMemo(() => chapterWaypoints.map((w) => w.progress), []);
+  // Starts from the fallback fractions in lib/chapters.ts, then switches to
+  // each section's measured position. Re-measured whenever the page height
+  // changes — e.g. fonts/images loading, or JourneyDesktop's GSAP pin
+  // spacer being inserted after its dynamic import resolves.
+  const [progressInput, setProgressInput] = useState(() => chapterWaypoints.map((w) => w.progress));
+
+  useEffect(() => {
+    let frameId = 0;
+    function measure() {
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        const next = measureWaypointProgress();
+        if (!next) return;
+        setProgressInput((prev) => (prev.every((p, i) => Math.abs(p - next[i]!) < 0.001) ? prev : next));
+      });
+    }
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(document.body);
+    window.addEventListener('resize', measure);
+    return () => {
+      cancelAnimationFrame(frameId);
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, []);
   const backgroundOutput = useMemo(() => chapterWaypoints.map((w) => w.background), []);
   const glowOutput = useMemo(() => chapterWaypoints.map((w) => w.glow), []);
   const grainOutput = useMemo(() => chapterWaypoints.map((w) => w.grain), []);

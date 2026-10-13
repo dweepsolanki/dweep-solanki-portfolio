@@ -47,8 +47,13 @@ export function PersonalReveal() {
             whileInView={reduceMotion ? undefined : { filter: 'grayscale(0) brightness(1)', scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 1.4, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            // Hover zoom goes through Motion (not a CSS hover:scale +
+            // transition-transform) because Motion owns this element's inline
+            // transform for the parallax — a CSS transition here made the
+            // parallax lag behind the scroll and the hover scale never applied.
+            whileHover={reduceMotion ? undefined : { scale: 1.02, transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] } }}
             style={reduceMotion ? undefined : { y: parallaxY }}
-            className="absolute inset-0 transition-transform duration-300 ease-utility hover:scale-[1.02]"
+            className="absolute inset-0"
           >
             <Image
               src={IMAGE_SRC}

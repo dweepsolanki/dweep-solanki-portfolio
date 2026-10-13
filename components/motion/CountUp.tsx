@@ -20,14 +20,20 @@ export function CountUp({ value, suffix = '', duration = 0.9, className = '' }: 
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
   const reduceMotion = useReducedMotionSafe();
-  const [display, setDisplay] = useState(0);
+  // Server HTML (and link previews / no-JS readers) gets the real figure;
+  // the client drops to 0 while the number is off-screen, then counts up
+  // once it scrolls into view.
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
     if (reduceMotion) {
       setDisplay(value);
       return;
     }
-    if (!inView) return;
+    if (!inView) {
+      setDisplay(0);
+      return;
+    }
     const controls = animate(0, value, {
       duration,
       ease: [0.16, 1, 0.3, 1],
@@ -38,7 +44,8 @@ export function CountUp({ value, suffix = '', duration = 0.9, className = '' }: 
 
   return (
     <span ref={ref} className={className}>
-      {display.toLocaleString()}
+      {/* Fixed locale so server and client format identically (no hydration mismatch). */}
+      {display.toLocaleString('en-US')}
       {suffix}
     </span>
   );
