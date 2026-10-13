@@ -11,16 +11,16 @@ export const timeline: TimelineEntry[] = [
   { id: 'tata', year: '2025', org: 'Tata Group', role: 'SOC Analyst Intern', category: '02 / SECURITY' },
   {
     id: 'yellowsense',
-    year: '2025 → PRESENT',
+    year: '2025 → 2026',
     org: 'YellowSense Technologies',
     role: 'Founding Team / Product Manager',
     category: '03 / ENTERPRISE',
   },
   {
-    id: 'independent',
-    year: 'NOW',
-    org: 'Independent Builds',
-    role: 'AI · Cybersecurity · Product',
-    category: '04 / EXPLORATION',
+    id: 'elevatoz',
+    year: '2026 → PRESENT',
+    org: 'Elevatoz Loyalty',
+    role: 'Customer Success Manager',
+    category: '04 / CUSTOMER SUCCESS',
   },
 ];

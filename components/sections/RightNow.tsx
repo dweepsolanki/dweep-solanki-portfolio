@@ -5,9 +5,9 @@ import { Reveal } from '@/components/motion/Reveal';
 import { Stagger, StaggerItem } from '@/components/motion/Stagger';
 
 const STATUS_ITEMS = [
-  { label: 'STATUS', value: 'Looking to join a new team' },
-  { label: 'EXPLORING', value: 'New opportunities' },
-  { label: 'OPEN TO', value: 'Software Engineering · Cybersecurity · Product · AI' },
+  { label: 'STATUS', value: 'Customer Success Manager at Elevatoz Loyalty' },
+  { label: 'FOCUS', value: 'Bridging customers, product and engineering to turn feedback into shipped value' },
+  { label: 'BUILDING', value: 'Software Engineering · Cybersecurity · Product · AI' },
   { label: 'INTERESTED IN', value: 'Meaningful engineering and product challenges' },
 ];
 
