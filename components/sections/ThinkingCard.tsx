@@ -56,7 +56,6 @@ export function ThinkingCard({ post, onOpen, scrollYProgress, parallaxFactor = 1
         onClick={() => onOpen(post.id)}
         onKeyDown={handleKeyDown}
         aria-haspopup="dialog"
-        aria-expanded={false}
         className="group relative w-full cursor-pointer overflow-hidden rounded-xl border border-ink/10 bg-white/[0.02] transition-all duration-200 ease-utility hover:-translate-y-1 hover:border-lime/30 focus-visible:border-lime/50 active:translate-y-0"
       >
         <motion.div

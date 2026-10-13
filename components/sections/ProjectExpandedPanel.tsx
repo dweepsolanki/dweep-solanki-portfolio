@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { X, ArrowRight, Github } from 'lucide-react';
 import type { Project } from '@/data/projects';
 import { ProjectTreatment } from './ProjectTreatment';
+import { useLockBodyScroll } from '@/lib/useLockBodyScroll';
 
 interface ProjectExpandedPanelProps {
   project: Project | null;
@@ -22,6 +23,7 @@ export function ProjectExpandedPanel({ project, onClose, onNext }: ProjectExpand
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerElRef = useRef<Element | null>(null);
+  useLockBodyScroll(project !== null);
 
   // Focus management: trap focus while open, restore on close (spec §10).
   useEffect(() => {
@@ -63,7 +65,7 @@ export function ProjectExpandedPanel({ project, onClose, onNext }: ProjectExpand
     <AnimatePresence>
       {project && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm md:p-10"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overscroll-contain bg-black/70 p-4 backdrop-blur-sm md:p-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

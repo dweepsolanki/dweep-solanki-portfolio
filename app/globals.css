@@ -77,6 +77,18 @@ body {
   border-radius: 2px;
 }
 
+/* Cards whose whole surface is a stretched <button> (see ProjectCard.tsx):
+   draw the focus ring around the card rather than the small title button,
+   so keyboard users see the same target that mouse users click. */
+.card-focus-ring:has(.card-trigger:focus-visible) {
+  outline: 1px solid #C6FF3D;
+  outline-offset: 3px;
+  border-color: rgb(198 255 61 / 0.5);
+}
+.card-trigger:focus-visible {
+  outline: none;
+}
+
 /* Utility: hide scrollbar for horizontal marquees while keeping function */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

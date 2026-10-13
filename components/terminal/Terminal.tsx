@@ -6,6 +6,7 @@ import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
 import { X } from 'lucide-react';
 import { useTerminalCommands, type TerminalOutputLine } from './useTerminalCommands';
 import { TerminalLine } from './TerminalLine';
+import { useLockBodyScroll } from '@/lib/useLockBodyScroll';
 
 const MOBILE_CHIPS = ['whoami', 'ls', 'cat philosophy.txt', 'contact', 'clear'];
 
@@ -30,6 +31,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const triggerElRef = useRef<Element | null>(null);
+  useLockBodyScroll(open);
 
   // Boot sequence: types commands in, reveals output instantly (spec §6.2).
   // Skipped entirely under reduced-motion — content appears immediately.
@@ -100,8 +102,14 @@ export function Terminal({ open, onClose }: TerminalProps) {
         onClose();
         return;
       }
-      if (e.key === 'Tab' && panelRef.current) {
-        const focusable = panelRef.current.querySelectorAll<HTMLElement>('a[href], button, input');
+      // Tab already handled by the input (autocomplete) — don't also move focus.
+      if (e.key === 'Tab' && panelRef.current && !e.defaultPrevented) {
+        // Only controls actually rendered at this breakpoint: the desktop
+        // input and the mobile chips are display:none on the other, and a
+        // hidden "last" element would let Tab escape the dialog.
+        const focusable = Array.from(
+          panelRef.current.querySelectorAll<HTMLElement>('a[href], button, input')
+        ).filter((el) => el.offsetParent !== null);
         if (focusable.length === 0) return;
         const first = focusable[0]!;
         const last = focusable[focusable.length - 1]!;
@@ -125,7 +133,9 @@ export function Terminal({ open, onClose }: TerminalProps) {
     if (e.key === 'Enter') {
       submit(input);
       setInput('');
-    } else if (e.key === 'Tab') {
+    } else if (e.key === 'Tab' && !e.shiftKey) {
+      // Tab autocompletes; Shift+Tab is left alone so keyboard users can
+      // still move focus back to the close button and any output links.
       e.preventDefault();
       setInput((prev) => autocomplete(prev));
     } else if (e.key === 'ArrowUp') {
@@ -147,7 +157,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[60] flex items-start justify-center bg-black/70 p-0 backdrop-blur-sm md:items-center md:p-6"
+          className="fixed inset-0 z-[60] flex items-start overscroll-contain justify-center bg-black/70 p-0 backdrop-blur-sm md:items-center md:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

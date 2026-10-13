@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { X, Linkedin } from 'lucide-react';
 import type { ThinkingPost } from '@/data/thinkingPosts';
+import { useLockBodyScroll } from '@/lib/useLockBodyScroll';
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -34,6 +35,7 @@ export function ThinkingExpandedPanel({ post, onClose }: ThinkingExpandedPanelPr
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerElRef = useRef<Element | null>(null);
+  useLockBodyScroll(post !== null);
 
   useEffect(() => {
     if (post) {
@@ -74,7 +76,7 @@ export function ThinkingExpandedPanel({ post, onClose }: ThinkingExpandedPanelPr
     <AnimatePresence>
       {post && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm md:p-10"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overscroll-contain bg-black/70 p-4 backdrop-blur-sm md:p-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
