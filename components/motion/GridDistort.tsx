@@ -53,7 +53,6 @@ export function GridDistort() {
           backgroundSize: '48px 48px',
           maskImage: 'radial-gradient(circle 380px at var(--gx) var(--gy), black 40%, transparent 100%)',
           WebkitMaskImage: 'radial-gradient(circle 380px at var(--gx) var(--gy), black 40%, transparent 100%)',
-          transition: 'mask-position 0.1s linear',
         } as React.CSSProperties
       }
     />

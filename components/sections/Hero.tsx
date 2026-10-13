@@ -82,10 +82,10 @@ export function Hero() {
         {/* 4. role / subheading reveal */}
         <div className="mt-6">
           <Reveal delay={0.15}>
-            <p className="font-display text-2xl font-medium text-ink md:text-3xl">Software Engineer</p>
+            <p className="font-display text-2xl font-medium text-ink md:text-3xl">Builder across software, security &amp; AI</p>
           </Reveal>
           <Reveal delay={0.22}>
-            <p className="mt-1 font-mono text-xs tracking-[0.15em] text-lime">CYBERSECURITY · AI · PRODUCT</p>
+            <p className="mt-1 font-mono text-xs tracking-[0.15em] text-lime">CUSTOMERS · PRODUCT · ENGINEERING</p>
           </Reveal>
         </div>
 

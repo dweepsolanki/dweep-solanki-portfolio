@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { projects } from '@/data/projects';
 
 export interface TerminalOutputLine {
   type: 'command' | 'output' | 'error' | 'links';
@@ -9,13 +10,19 @@ export interface TerminalOutputLine {
 
 const COMMANDS = ['help', 'whoami', 'ls', 'cat philosophy.txt', 'contact', 'projects', 'clear', 'exit'];
 
+// Shared by the boot sequence and the interactive commands so the two
+// can never drift apart.
+const WHOAMI = 'Dweep Solanki\nBuilder across software, security & AI\nCustomers · Product · Engineering';
+const LS = 'projects/\nsecurity/\nai/\nhackathons/';
+const PHILOSOPHY = 'Build things.\nBreak assumptions.\nSecure what matters.\nShip what works.';
+
 const BOOT_SEQUENCE: TerminalOutputLine[] = [
   { type: 'command', text: 'whoami' },
-  { type: 'output', text: 'Dweep Solanki\nSoftware Engineer\nCybersecurity\nProduct Builder' },
+  { type: 'output', text: WHOAMI },
   { type: 'command', text: 'ls' },
-  { type: 'output', text: 'projects/\nsecurity/\nai/\nhackathons/' },
+  { type: 'output', text: LS },
   { type: 'command', text: 'cat philosophy.txt' },
-  { type: 'output', text: 'Build things.\nBreak assumptions.\nSecure what matters.\nShip what works.' },
+  { type: 'output', text: PHILOSOPHY },
 ];
 
 function runCommand(input: string): TerminalOutputLine[] {
@@ -24,18 +31,13 @@ function runCommand(input: string): TerminalOutputLine[] {
     case 'help':
       return [{ type: 'output', text: `Available commands:\n${COMMANDS.join(', ')}` }];
     case 'whoami':
-      return [{ type: 'output', text: 'Dweep Solanki\nSoftware Engineer\nCybersecurity\nProduct Builder' }];
+      return [{ type: 'output', text: WHOAMI }];
     case 'ls':
-      return [{ type: 'output', text: 'projects/\nsecurity/\nai/\nhackathons/' }];
+      return [{ type: 'output', text: LS }];
     case 'cat philosophy.txt':
-      return [{ type: 'output', text: 'Build things.\nBreak assumptions.\nSecure what matters.\nShip what works.' }];
+      return [{ type: 'output', text: PHILOSOPHY }];
     case 'projects':
-      return [
-        {
-          type: 'output',
-          text: 'Pension Pathfinder, RBI HaRBInger, YellowSense, GTM Signal, SecureShareVault, Project Mactus',
-        },
-      ];
+      return [{ type: 'output', text: projects.map((p) => p.title).join(', ') }];
     case 'contact':
       return [{ type: 'links' }];
     case 'clear':

@@ -12,9 +12,9 @@ import type { Project } from '@/data/projects';
 export function ProjectTreatment({ project }: { project: Project }) {
   switch (project.treatment) {
     case 'sequence':
-      return <SequenceFlow stages={project.stages ?? []} connected />;
+      return <SequenceFlow stages={project.stages ?? []} />;
     case 'flow':
-      return <SequenceFlow stages={project.stages ?? []} connected arrows />;
+      return <SequenceFlow stages={project.stages ?? []} arrows />;
     case 'redacted':
       return <Redacted />;
     case 'sparkline':
@@ -27,7 +27,7 @@ export function ProjectTreatment({ project }: { project: Project }) {
   }
 }
 
-function SequenceFlow({ stages, arrows = false }: { stages: string[]; connected?: boolean; arrows?: boolean }) {
+function SequenceFlow({ stages, arrows = false }: { stages: string[]; arrows?: boolean }) {
   return (
     <div className="mt-8 flex flex-wrap items-center gap-2">
       {stages.map((stage, i) => (

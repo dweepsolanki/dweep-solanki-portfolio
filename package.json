@@ -10,7 +10,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "clsx": "2.1.1",
     "framer-motion": "11.11.17",
     "gsap": "3.12.5",
     "lucide-react": "0.454.0",
