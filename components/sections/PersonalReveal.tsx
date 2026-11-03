@@ -39,7 +39,7 @@ export function PersonalReveal() {
           whileInView={reduceMotion ? undefined : { clipPath: 'inset(0 0 0% 0)' }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-sm overflow-hidden rounded-2xl border border-ink/10 sm:max-w-md"
+          className="relative w-full max-w-sm overflow-hidden rounded-2xl border border-line sm:max-w-md"
           style={{ aspectRatio: ASPECT }}
         >
           <motion.div

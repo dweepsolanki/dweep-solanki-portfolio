@@ -106,14 +106,14 @@ export function Hero() {
           <MagneticButton
             as="a"
             href="#work"
-            className="rounded-full bg-lime px-6 py-3 text-sm font-semibold text-graphite transition-colors duration-150 hover:bg-lime-dim"
+            className="rounded-full bg-lime-fill px-6 py-3 text-sm font-semibold text-on-lime shadow-cta transition-colors duration-150 hover:bg-lime-dim"
           >
             EXPLORE MY WORK →
           </MagneticButton>
           <MagneticButton
             as="a"
             href="#contact"
-            className="rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition-colors duration-150 hover:border-lime/50"
+            className="rounded-full border border-line-strong px-6 py-3 text-sm font-semibold text-ink transition-colors duration-150 hover:border-lime/50"
           >
             LET&apos;S TALK
           </MagneticButton>
@@ -124,7 +124,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.55 }}
-          className="mt-14 max-w-md rounded-lg border border-ink/10 bg-white/[0.02] p-5 font-mono text-xs"
+          className="mt-14 max-w-md rounded-lg border border-line bg-card shadow-card p-5 font-mono text-xs"
         >
           <p className="text-lime">SYSTEM / AVAILABLE</p>
           <p className="mt-1 text-ink-muted">BUILDING IDEAS INTO USEFUL SYSTEMS</p>

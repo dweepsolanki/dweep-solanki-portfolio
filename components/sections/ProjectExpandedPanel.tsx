@@ -65,7 +65,7 @@ export function ProjectExpandedPanel({ project, onClose, onNext }: ProjectExpand
     <AnimatePresence>
       {project && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overscroll-contain bg-black/70 p-4 backdrop-blur-sm md:p-10"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overscroll-contain bg-scrim p-4 backdrop-blur-sm md:p-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -77,7 +77,7 @@ export function ProjectExpandedPanel({ project, onClose, onNext }: ProjectExpand
             aria-modal="true"
             aria-labelledby="project-panel-title"
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-3xl rounded-2xl border border-ink/10 bg-graphite-deep p-6 md:p-10"
+            className="relative w-full max-w-3xl rounded-2xl border border-line bg-graphite-deep p-6 md:p-10"
             layoutId={`project-container-${project.id}`}
           >
             <button
@@ -85,7 +85,7 @@ export function ProjectExpandedPanel({ project, onClose, onNext }: ProjectExpand
               type="button"
               onClick={onClose}
               aria-label="Close case study"
-              className="absolute right-5 top-5 rounded-full border border-ink/10 p-2 text-ink-muted transition-colors duration-150 hover:border-lime/40 hover:text-lime"
+              className="absolute right-5 top-5 rounded-full border border-line p-2 text-ink-muted transition-colors duration-150 hover:border-lime/40 hover:text-lime"
             >
               <X size={16} />
             </button>
@@ -119,7 +119,7 @@ export function ProjectExpandedPanel({ project, onClose, onNext }: ProjectExpand
 
             <motion.div
               layoutId={`project-visual-${project.id}`}
-              className="relative mt-6 aspect-[16/9] w-full overflow-hidden rounded-xl border border-ink/10 bg-graphite-deep"
+              className="relative mt-6 aspect-[16/9] w-full overflow-hidden rounded-xl border border-line-strong bg-graphite-deep dark:border-line"
             >
               <Image
                 src={project.image}
@@ -129,7 +129,7 @@ export function ProjectExpandedPanel({ project, onClose, onNext }: ProjectExpand
                 className="object-cover"
                 priority
               />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+              <div className="dark pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3">
                 <span className="font-mono text-[10px] uppercase tracking-wide text-ink-faint">{project.footerNote}</span>
               </div>
             </motion.div>
@@ -161,13 +161,13 @@ export function ProjectExpandedPanel({ project, onClose, onNext }: ProjectExpand
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.35, type: 'spring', stiffness: 260, damping: 18 }}
-                className="mt-8 inline-block rounded-full border border-amber/30 bg-amber/10 px-4 py-2 font-mono text-xs uppercase tracking-wide text-amber"
+                className="mt-8 inline-block rounded-full border border-amber/30 bg-amber-fill/10 px-4 py-2 font-mono text-xs uppercase tracking-wide text-amber"
               >
                 {project.result}
               </motion.p>
             )}
 
-            <div className="mt-10 flex justify-end border-t border-ink/10 pt-6">
+            <div className="mt-10 flex justify-end border-t border-line pt-6">
               <button
                 type="button"
                 onClick={onNext}

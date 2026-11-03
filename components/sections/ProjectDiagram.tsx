@@ -19,7 +19,7 @@ export function ProjectDiagram({ diagram }: { diagram: Diagram }) {
   const reduceMotion = useReducedMotionSafe();
 
   return (
-    <figure className="mt-8 rounded-xl border border-ink/10 bg-black/20 p-5 md:p-6">
+    <figure className="mt-8 rounded-xl border border-line bg-inset p-5 md:p-6">
       <figcaption className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint">
         How it works · {diagram.title}
       </figcaption>
@@ -57,7 +57,7 @@ export function ProjectDiagram({ diagram }: { diagram: Diagram }) {
             <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-ink-muted">{step.detail}</p>
 
             {step.branch && (
-              <p className="mt-2 max-w-xl border-l border-amber/40 pl-3 text-xs leading-relaxed text-amber/90">
+              <p className="mt-2 max-w-xl border-l border-amber/40 pl-3 text-xs leading-relaxed text-amber dark:text-amber/90">
                 <span aria-hidden="true">↳ </span>
                 {step.branch}
               </p>

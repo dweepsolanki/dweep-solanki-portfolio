@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { useTheme } from 'next-themes';
 import { projects } from '@/data/projects';
 
 export interface TerminalOutputLine {
@@ -8,7 +9,8 @@ export interface TerminalOutputLine {
   text?: string;
 }
 
-const COMMANDS = ['help', 'whoami', 'ls', 'cat philosophy.txt', 'contact', 'projects', 'clear', 'exit'];
+const COMMANDS = ['help', 'whoami', 'ls', 'cat philosophy.txt', 'contact', 'projects', 'theme', 'clear', 'exit'];
+const THEMES = ['light', 'dark', 'system'];
 
 // Shared by the boot sequence and the interactive commands so the two
 // can never drift apart.
@@ -56,6 +58,7 @@ export function useTerminalCommands(onExit: () => void) {
   const [lines, setLines] = useState<TerminalOutputLine[]>([]);
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number | null>(null);
+  const { theme, resolvedTheme, setTheme } = useTheme();
 
   const submit = useCallback(
     (input: string) => {
@@ -76,11 +79,31 @@ export function useTerminalCommands(onExit: () => void) {
         return;
       }
 
+      // `theme` needs next-themes, so it is handled here rather than in the
+      // pure runCommand. The terminal itself stays dark; this changes the page.
+      if (cmd === 'theme' || cmd.startsWith('theme ')) {
+        const arg = cmd.slice('theme'.length).trim();
+        let output: TerminalOutputLine[];
+        if (!arg) {
+          const current = theme === 'system' ? `system (${resolvedTheme})` : theme;
+          output = [{ type: 'output', text: `theme: ${current}\nusage: theme light | dark | system` }];
+        } else if (THEMES.includes(arg)) {
+          setTheme(arg);
+          output = [{ type: 'output', text: `theme set to ${arg}` }];
+        } else {
+          output = [{ type: 'error', text: `unknown theme: ${arg}` }, { type: 'error', text: 'usage: theme light | dark | system' }];
+        }
+        setLines((prev) => [...prev, { type: 'command', text: input }, ...output]);
+        setHistory((h) => [...h, input]);
+        setHistoryIndex(null);
+        return;
+      }
+
       setLines((prev) => [...prev, { type: 'command', text: input }, ...runCommand(input)]);
       setHistory((h) => [...h, input]);
       setHistoryIndex(null);
     },
-    [onExit]
+    [onExit, theme, resolvedTheme, setTheme]
   );
 
   const autocomplete = useCallback((partial: string) => {

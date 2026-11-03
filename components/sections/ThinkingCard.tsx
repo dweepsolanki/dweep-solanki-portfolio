@@ -56,11 +56,11 @@ export function ThinkingCard({ post, onOpen, scrollYProgress, parallaxFactor = 1
         onClick={() => onOpen(post.id)}
         onKeyDown={handleKeyDown}
         aria-haspopup="dialog"
-        className="group relative w-full cursor-pointer overflow-hidden rounded-xl border border-ink/10 bg-white/[0.02] transition-all duration-200 ease-utility hover:-translate-y-1 hover:border-lime/30 focus-visible:border-lime/50 active:translate-y-0"
+        className="group relative w-full cursor-pointer overflow-hidden rounded-xl border border-line bg-card shadow-card transition-all duration-200 ease-utility hover:-translate-y-1 hover:border-lime/30 focus-visible:border-lime/50 active:translate-y-0"
       >
         <motion.div
           layoutId={`thinking-visual-${post.id}`}
-          className="relative aspect-[4/3] w-full overflow-hidden bg-graphite-deep"
+          className="dark relative aspect-[4/3] w-full overflow-hidden bg-graphite-deep"
         >
           {post.image && (
             <Image
@@ -87,7 +87,7 @@ export function ThinkingCard({ post, onOpen, scrollYProgress, parallaxFactor = 1
             {post.title}
           </motion.h4>
           <div className="mt-2 flex items-center justify-between font-mono text-[10px] uppercase tracking-wide">
-            <span className="text-ink-faint opacity-70 transition-opacity duration-200 group-hover:opacity-100">
+            <span className="text-ink-faint transition-opacity dark:opacity-70 duration-200 group-hover:opacity-100">
               {post.topic}
             </span>
           </div>

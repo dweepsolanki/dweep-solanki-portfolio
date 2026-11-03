@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion, useTransform, type MotionValue } from 'framer-motion';
 import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
-import { chapterWaypoints, measureWaypointProgress } from '@/lib/chapters';
+import { chapterWaypoints, measureWaypointProgress, type ChapterWaypoint } from '@/lib/chapters';
 
 interface ChapterEnvironmentProps {
   scrollYProgress: MotionValue<number>;
@@ -22,6 +22,9 @@ interface ChapterEnvironmentProps {
  *
  * With prefers-reduced-motion, falls back to flat per-waypoint colors with
  * a simple opacity cross-fade instead of continuous interpolation, per §3.6.
+ *
+ * Light and dark each have their own waypoint tones (lib/chapters.ts); see
+ * the comment above the return for how the active one is chosen.
  */
 export function ChapterEnvironment({ scrollYProgress }: ChapterEnvironmentProps) {
   const reduceMotion = useReducedMotionSafe();
@@ -52,26 +55,66 @@ export function ChapterEnvironment({ scrollYProgress }: ChapterEnvironmentProps)
       window.removeEventListener('resize', measure);
     };
   }, []);
-  const backgroundOutput = useMemo(() => chapterWaypoints.map((w) => w.background), []);
-  const glowOutput = useMemo(() => chapterWaypoints.map((w) => w.glow), []);
-  const grainOutput = useMemo(() => chapterWaypoints.map((w) => w.grain), []);
+
+  if (reduceMotion) {
+    // Simplified, accessible fallback: static base tone (bg-graphite is
+    // var-backed, so it follows the theme), no continuous interpolation, no
+    // ambient glow drift.
+    return <div className="fixed inset-0 -z-10 bg-graphite" aria-hidden="true" />;
+  }
+
+  // Both theme layers are always rendered and CSS shows the active one, so
+  // the server output never depends on the theme (no hydration mismatch, no
+  // flash before next-themes resolves) and both share one measurement.
+  return (
+    <>
+      <EnvironmentLayer
+        className="hidden dark:block"
+        tones={chapterWaypoints}
+        progressInput={progressInput}
+        scrollYProgress={scrollYProgress}
+      />
+      <EnvironmentLayer
+        className="dark:hidden"
+        tones={LIGHT_TONES}
+        progressInput={progressInput}
+        scrollYProgress={scrollYProgress}
+      />
+    </>
+  );
+}
+
+type Tone = Pick<ChapterWaypoint, 'background' | 'glow' | 'grain'>;
+
+const LIGHT_TONES: Tone[] = chapterWaypoints.map((w) => w.light);
+
+interface EnvironmentLayerProps {
+  className: string;
+  tones: Tone[];
+  progressInput: number[];
+  scrollYProgress: MotionValue<number>;
+}
+
+function EnvironmentLayer({ className, tones, progressInput, scrollYProgress }: EnvironmentLayerProps) {
+  const backgroundOutput = useMemo(() => tones.map((w) => w.background), [tones]);
+  const glowOutput = useMemo(() => tones.map((w) => w.glow), [tones]);
+  const grainOutput = useMemo(() => tones.map((w) => w.grain), [tones]);
 
   const background = useTransform(scrollYProgress, progressInput, backgroundOutput);
   const glowColor = useTransform(scrollYProgress, progressInput, glowOutput);
   const grainOpacity = useTransform(scrollYProgress, progressInput, grainOutput);
   const glowY = useTransform(scrollYProgress, [0, 1], ['10%', '90%']);
 
-  if (reduceMotion) {
-    // Simplified, accessible fallback: static graphite base, no continuous
-    // interpolation, no ambient glow drift. Individual sections may still
-    // apply their own flat tint via CSS class in this mode if desired.
-    return <div className="fixed inset-0 -z-10 bg-graphite" aria-hidden="true" />;
-  }
-
+  // Glow opacity, grain blend mode and vignette strength come from CSS
+  // variables in globals.css (lighter in light mode).
   return (
-    <motion.div className="fixed inset-0 -z-10 overflow-hidden" style={{ backgroundColor: background }} aria-hidden="true">
+    <motion.div
+      className={`fixed inset-0 -z-10 overflow-hidden ${className}`}
+      style={{ backgroundColor: background }}
+      aria-hidden="true"
+    >
       <motion.div
-        className="absolute h-[60vmax] w-[60vmax] rounded-full blur-[120px] opacity-[0.12]"
+        className="absolute h-[60vmax] w-[60vmax] rounded-full blur-[120px] [opacity:var(--env-glow-opacity)]"
         style={{
           backgroundColor: glowColor,
           top: glowY,
@@ -81,7 +124,7 @@ export function ChapterEnvironment({ scrollYProgress }: ChapterEnvironmentProps)
         }}
       />
       <motion.div className="grain-layer absolute inset-0" style={{ opacity: grainOpacity }} />
-      <div className="pointer-events-none absolute inset-0 [box-shadow:inset_0_0_180px_60px_rgba(0,0,0,0.55)]" />
+      <div className="pointer-events-none absolute inset-0 [box-shadow:inset_0_0_180px_60px_var(--env-vignette)]" />
     </motion.div>
   );
 }

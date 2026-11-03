@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useTransform, type MotionValue } from 'framer-motion';
 import { useReducedMotionSafe } from '@/components/motion/useReducedMotionSafe';
+import { ThemeMenuRow, ThemeToggle } from '@/components/theme/ThemeToggle';
 
 interface NavProps {
   onOpenTerminal: () => void;
@@ -89,7 +90,7 @@ export function Nav({ onOpenTerminal, scrollY }: NavProps) {
   return (
     <motion.header
       style={{
-        backgroundColor: useTransform(backdropOpacity, (v) => `rgba(10, 10, 12, ${v * 0.6})`),
+        backgroundColor: useTransform(backdropOpacity, (v) => `rgb(var(--graphite) / ${v * 0.6})`),
         backdropFilter: useTransform(backdropOpacity, (v) => (v > 0.05 ? `blur(${v * 8}px)` : 'none')),
       }}
       className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 md:px-12"
@@ -122,6 +123,7 @@ export function Nav({ onOpenTerminal, scrollY }: NavProps) {
       </nav>
 
       <div className="flex items-center gap-5">
+        <ThemeToggle />
         <button
           type="button"
           onClick={onOpenTerminal}
@@ -154,7 +156,7 @@ export function Nav({ onOpenTerminal, scrollY }: NavProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-x-0 top-full border-b border-ink/10 bg-graphite/95 px-6 pb-6 pt-2 backdrop-blur-md md:hidden"
+            className="absolute inset-x-0 top-full border-b border-line bg-graphite/95 px-6 pb-6 pt-2 backdrop-blur-md md:hidden"
           >
             <ul className="flex flex-col">
               {LINKS.map((link) => {
@@ -177,6 +179,9 @@ export function Nav({ onOpenTerminal, scrollY }: NavProps) {
                   </li>
                 );
               })}
+              <li>
+                <ThemeMenuRow />
+              </li>
             </ul>
           </motion.nav>
         )}

@@ -40,6 +40,7 @@ app/
 components/
   SiteShell.tsx         top-level client component; owns the single page-wide useScroll()
   chapter/              ChapterEnvironment (scroll-driven background), ChapterMarker, ScrollProgressBar
+  theme/                ThemeProvider (next-themes) and ThemeToggle (header icon + mobile-menu row)
   motion/               Reveal, Stagger, MagneticButton, CountUp, GridDistort, useReducedMotionSafe
   nav/Nav.tsx           fixed header, active-section underline, mobile menu
   sections/             one component per chapter, in page order
@@ -56,6 +57,7 @@ lib/
 
 - **One background.** `ChapterEnvironment` is the only thing that paints the page background. Sections stay transparent so the color changes continuously instead of in blocks.
 - **Copy lives in `data/`.** Components read from `data/*.ts`; editing text should never require touching a component. The terminal's `projects` command also reads `data/projects.ts`.
+- **Colors are theme tokens.** Every Tailwind color (`ink`, `graphite`, `lime`, `line`, …) is a CSS variable defined in `app/globals.css` with a light and a dark value; don't hard-code hex in components. See §4b.
 - **GSAP is isolated to `JourneyDesktop.tsx`** and dynamically imported, so only desktop visitors who reach the Journey section load it. Everything else uses Framer Motion.
 
 ---
@@ -67,7 +69,8 @@ lib/
 | Add or edit a project | `data/projects.ts`. Put the image in `public/images/projects/`. For the expanded panel, use `treatment: 'diagram'` with a `diagram` (rendered by `ProjectDiagram.tsx`), or `'redacted'` / `'quiet'`. |
 | Update a "How it works" diagram | The `diagram` on that project in `data/projects.ts`. Each one is mapped from the project's public repository (the source files are named in a comment above it) — re-check against the code when the repo changes, and don't describe anything the code doesn't do. |
 | Add a LinkedIn post | `data/thinkingPosts.ts`. See the comment there for how `date` is decoded from the post URL. |
-| Change a chapter's color | `lib/chapters.ts` only. |
+| Change a chapter's color | `lib/chapters.ts` only — set both the dark tone and its `light` tone. |
+| Change a theme color | The token in `app/globals.css` (`:root, .light` and `.dark` blocks). Re-check contrast (§4b). |
 | Add a new chapter | Add the section with an `id`, then add a waypoint in `lib/chapters.ts` with that id as `sectionId`. |
 | Change the headline / role | `components/sections/Hero.tsx`, `TITLE` in `app/layout.tsx`, `WHOAMI` in `components/terminal/useTerminalCommands.ts`, and the text in `app/opengraph-image.tsx`. |
 
@@ -78,6 +81,30 @@ lib/
 Each waypoint in `lib/chapters.ts` maps a color/glow/grain to a section (`sectionId`). On load, and whenever the page height changes, `ChapterEnvironment` measures where each section's center falls in the total scroll range and interpolates between those points. The hero is pinned to 0 and Contact to 1, so the page starts and ends on the same graphite.
 
 The measurement is necessary because section heights differ a lot between desktop and mobile, and the pinned Journey timeline adds scroll length on desktop only. The `progress` fractions in `chapters.ts` are just a fallback until the first measurement.
+
+---
+
+## 4b. Light and dark themes
+
+`next-themes` puts `.light` or `.dark` on `<html>` (default: the OS setting; the choice is saved in `localStorage.theme`). The toggle sits left of `~/dweep` in the header and as a row in the mobile menu; the terminal also accepts `theme light|dark|system`.
+
+- **Tokens.** `app/globals.css` defines each color twice. Channel tokens (`--ink: 23 23 23`) keep opacity modifiers like `border-lime/50` working.
+- **Accent as text vs fill.** `lime` / `amber` are for text, icons and thin lines and are darkened in light mode. Solid fills use `bg-lime-fill` with `text-on-lime`, and tints use `bg-amber-fill/10`; these keep the bright color in both themes.
+- **Alpha accents.** An accent that is dimmed with an alpha modifier in dark mode is written `text-lime dark:text-lime/80`, so light mode gets full strength and keeps contrast.
+- **Dark islands.** `class="dark"` on an element re-declares the dark tokens for its subtree. The terminal and the captions/chips on photos use it, so their text stays light on a light page.
+- **Background.** `ChapterEnvironment` renders a dark and a light layer and CSS shows one, so server HTML never depends on the theme.
+- **Transitions.** The provider uses `disableTransitionOnChange`, so the switch is instant and no CSS transition touches elements Framer Motion moves.
+
+Contrast (WCAG 2.1, worst case across page, card, dialog, diagram inset and every chapter tint):
+
+| Token | Dark | Light | Dark | Light |
+|---|---|---|---|---|
+| `ink` | `#F5F5F2` | `#171717` | 15.7:1 | 16.0:1 |
+| `ink-muted` | `#9A9A9E` | `#4D4D4D` | 6.1:1 | 7.6:1 |
+| `ink-faint` | `#838388` | `#666666` | 4.5:1 | 5.1:1 |
+| `lime` (text, focus ring) | `#C6FF3D` | `#4A770E` | 14.5:1 | 4.8:1 |
+| `amber` (text) | `#FFB020` | `#AD5009` | 9.4:1 | 4.8:1 |
+| `on-lime` on `lime-fill` | `#0A0A0C` on `#C6FF3D` | same | 16.7:1 | 16.7:1 |
 
 ---
 

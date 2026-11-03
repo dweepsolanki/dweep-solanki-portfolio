@@ -76,7 +76,7 @@ export function ThinkingExpandedPanel({ post, onClose }: ThinkingExpandedPanelPr
     <AnimatePresence>
       {post && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overscroll-contain bg-black/70 p-4 backdrop-blur-sm md:p-10"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overscroll-contain bg-scrim p-4 backdrop-blur-sm md:p-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -88,7 +88,7 @@ export function ThinkingExpandedPanel({ post, onClose }: ThinkingExpandedPanelPr
             aria-modal="true"
             aria-labelledby="thinking-panel-title"
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-ink/10 bg-graphite-deep"
+            className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-line bg-graphite-deep"
             layoutId={`thinking-container-${post.id}`}
           >
             <button
@@ -96,14 +96,14 @@ export function ThinkingExpandedPanel({ post, onClose }: ThinkingExpandedPanelPr
               type="button"
               onClick={onClose}
               aria-label="Close post"
-              className="absolute right-5 top-5 z-10 rounded-full border border-white/20 bg-black/40 p-2 text-ink-muted backdrop-blur-sm transition-colors duration-150 hover:border-lime/40 hover:text-lime"
+              className="dark absolute right-5 top-5 z-10 rounded-full border border-white/20 bg-black/40 p-2 text-ink-muted backdrop-blur-sm transition-colors duration-150 hover:border-lime/40 hover:text-lime"
             >
               <X size={16} />
             </button>
 
             <motion.div
               layoutId={`thinking-visual-${post.id}`}
-              className="relative aspect-[16/10] w-full overflow-hidden bg-graphite-deep md:aspect-[16/9]"
+              className="dark relative aspect-[16/10] w-full overflow-hidden bg-graphite-deep md:aspect-[16/9]"
             >
               {post.image && (
                 <Image
@@ -160,7 +160,7 @@ export function ThinkingExpandedPanel({ post, onClose }: ThinkingExpandedPanelPr
                 href={post.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group/link mt-8 inline-flex items-center gap-2 rounded-full border border-ink/20 px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-ink transition-colors duration-150 hover:border-lime/50 hover:text-lime"
+                className="group/link mt-8 inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-ink transition-colors duration-150 hover:border-lime/50 hover:text-lime"
               >
                 <Linkedin size={14} />
                 Read Original Post on LinkedIn

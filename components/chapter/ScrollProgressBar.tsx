@@ -29,7 +29,7 @@ export function ScrollProgressBar({ scrollYProgress }: ScrollProgressBarProps) {
     <motion.div
       aria-hidden="true"
       style={{ scaleX: scrollYProgress }}
-      className="fixed inset-x-0 top-0 z-50 h-[2px] origin-left bg-lime/60"
+      className="fixed inset-x-0 top-0 z-50 h-[2px] origin-left bg-lime dark:bg-lime/60"
     />
   );
 }

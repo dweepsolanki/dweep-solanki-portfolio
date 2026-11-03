@@ -12,7 +12,7 @@ interface ChapterMarkerProps {
  */
 export function ChapterMarker({ label, className = '' }: ChapterMarkerProps) {
   return (
-    <span className={`chapter-label text-lime/80 ${className}`} aria-hidden="true">
+    <span className={`chapter-label text-lime dark:text-lime/80 ${className}`} aria-hidden="true">
       {label}
     </span>
   );

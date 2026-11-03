@@ -17,19 +17,36 @@ export interface ChapterWaypoint {
   background: string; // hex
   glow: string; // accent glow color at this waypoint
   grain: number; // 0–1 opacity
+  /**
+   * Light-theme tone: a ~97% lightness tint of the dark hue, about half the
+   * grain. Glow opacity is lower in light mode (--env-glow-opacity), and the
+   * Thinking glow is a much softer purple.
+   */
+  light: { background: string; glow: string; grain: number };
 }
 
+// prettier-ignore
 export const chapterWaypoints: ChapterWaypoint[] = [
-  { id: 'intro', label: '01 / INTRODUCTION', sectionId: null, progress: 0.0, background: '#0A0A0C', glow: '#C6FF3D', grain: 0.02 },
-  { id: 'human', label: '02 / HUMAN', sectionId: 'about', progress: 0.1, background: '#111327', glow: '#C6FF3D', grain: 0.03 },
-  { id: 'build', label: '03 / BUILD', sectionId: 'build', progress: 0.22, background: '#0C0D10', glow: '#C6FF3D', grain: 0.03 },
-  { id: 'work', label: '04 / SELECTED WORK', sectionId: 'work', progress: 0.32, background: '#0B0B0E', glow: '#C6FF3D', grain: 0.03 },
-  { id: 'proof', label: '05 / PROOF', sectionId: 'proof', progress: 0.5, background: '#141110', glow: '#FFB020', grain: 0.05 },
-  { id: 'journey', label: '06 / JOURNEY', sectionId: 'journey', progress: 0.62, background: '#12151C', glow: '#C6FF3D', grain: 0.04 },
-  { id: 'beyond', label: '06B / EXPLORATION', sectionId: 'beyond', progress: 0.72, background: '#0E0F12', glow: '#C6FF3D', grain: 0.03 },
-  { id: 'thinking', label: '07 / THINKING', sectionId: 'thinking', progress: 0.82, background: '#1B1420', glow: '#C084FC', grain: 0.05 },
-  { id: 'right-now', label: '07B / CURRENTLY', sectionId: 'right-now', progress: 0.9, background: '#0E0D10', glow: '#C6FF3D', grain: 0.03 },
-  { id: 'contact', label: '08 / CONTACT', sectionId: 'contact', progress: 1.0, background: '#0A0A0C', glow: '#C6FF3D', grain: 0.02 },
+  { id: 'intro', label: '01 / INTRODUCTION', sectionId: null, progress: 0.0, background: '#0A0A0C', glow: '#C6FF3D', grain: 0.02,
+    light: { background: '#FAFAFA', glow: '#C6FF3D', grain: 0.01 } },
+  { id: 'human', label: '02 / HUMAN', sectionId: 'about', progress: 0.1, background: '#111327', glow: '#C6FF3D', grain: 0.03,
+    light: { background: '#F5F5F9', glow: '#C6FF3D', grain: 0.015 } },
+  { id: 'build', label: '03 / BUILD', sectionId: 'build', progress: 0.22, background: '#0C0D10', glow: '#C6FF3D', grain: 0.03,
+    light: { background: '#F8F8FA', glow: '#C6FF3D', grain: 0.015 } },
+  { id: 'work', label: '04 / SELECTED WORK', sectionId: 'work', progress: 0.32, background: '#0B0B0E', glow: '#C6FF3D', grain: 0.03,
+    light: { background: '#F8F8F9', glow: '#C6FF3D', grain: 0.015 } },
+  { id: 'proof', label: '05 / PROOF', sectionId: 'proof', progress: 0.5, background: '#141110', glow: '#FFB020', grain: 0.05,
+    light: { background: '#F9F8F8', glow: '#FFB020', grain: 0.025 } },
+  { id: 'journey', label: '06 / JOURNEY', sectionId: 'journey', progress: 0.62, background: '#12151C', glow: '#C6FF3D', grain: 0.04,
+    light: { background: '#F6F6F8', glow: '#C6FF3D', grain: 0.02 } },
+  { id: 'beyond', label: '06B / EXPLORATION', sectionId: 'beyond', progress: 0.72, background: '#0E0F12', glow: '#C6FF3D', grain: 0.03,
+    light: { background: '#F8F8F9', glow: '#C6FF3D', grain: 0.015 } },
+  { id: 'thinking', label: '07 / THINKING', sectionId: 'thinking', progress: 0.82, background: '#1B1420', glow: '#C084FC', grain: 0.05,
+    light: { background: '#F7F6F8', glow: '#D8B4FE', grain: 0.025 } },
+  { id: 'right-now', label: '07B / CURRENTLY', sectionId: 'right-now', progress: 0.9, background: '#0E0D10', glow: '#C6FF3D', grain: 0.03,
+    light: { background: '#F8F8F9', glow: '#C6FF3D', grain: 0.015 } },
+  { id: 'contact', label: '08 / CONTACT', sectionId: 'contact', progress: 1.0, background: '#0A0A0C', glow: '#C6FF3D', grain: 0.02,
+    light: { background: '#FAFAFA', glow: '#C6FF3D', grain: 0.01 } },
 ];
 
 /**

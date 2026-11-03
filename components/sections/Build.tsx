@@ -71,7 +71,7 @@ function CapabilityCard({ cap, delay }: { cap: Capability; delay: number }) {
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
       whileHover="hover"
-      className="group relative overflow-hidden rounded-xl border border-ink/10 bg-white/[0.02] p-6"
+      className="group relative overflow-hidden rounded-xl border border-line bg-card shadow-card p-6"
     >
       {/* border trace — corners-in for 'guarded', simple fade for others */}
       <motion.div
@@ -85,7 +85,7 @@ function CapabilityCard({ cap, delay }: { cap: Capability; delay: number }) {
         <motion.div
           variants={{ hover: { opacity: 0.08 } }}
           initial={{ opacity: 0 }}
-          className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(to_bottom,#C6FF3D_0px,#C6FF3D_1px,transparent_1px,transparent_24px)]"
+          className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(to_bottom,rgb(var(--lime))_0px,rgb(var(--lime))_1px,transparent_1px,transparent_24px)]"
         />
       )}
 

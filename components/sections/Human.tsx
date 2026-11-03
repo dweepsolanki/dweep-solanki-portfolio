@@ -35,7 +35,7 @@ export function Human() {
           </p>
         </Reveal>
 
-        <Stagger className="mt-16 grid grid-cols-2 gap-8 border-t border-ink/10 pt-8 md:grid-cols-4" staggerDelay={60}>
+        <Stagger className="mt-16 grid grid-cols-2 gap-8 border-t border-line pt-8 md:grid-cols-4" staggerDelay={60}>
           {META_ROWS.map((row) => (
             <StaggerItem key={row.label}>
               <p className="font-mono text-[11px] tracking-[0.12em] text-ink-faint">{row.label}</p>

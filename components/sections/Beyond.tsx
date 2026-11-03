@@ -63,7 +63,7 @@ function BeyondCardItem({
     style: reduceMotion ? undefined : { y: depthY },
     whileHover: reduceMotion ? undefined : { rotate: 1.2, scale: 1.02 },
     transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] as const },
-    className: 'group relative block rounded-xl border border-ink/10 bg-white/[0.02] p-6',
+    className: 'group relative block rounded-xl border border-line bg-card shadow-card p-6',
   };
 
   if (card.href) {

@@ -157,7 +157,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[60] flex items-start overscroll-contain justify-center bg-black/70 p-0 backdrop-blur-sm md:items-center md:p-6"
+          className="fixed inset-0 z-[60] flex items-start overscroll-contain justify-center bg-scrim p-0 backdrop-blur-sm md:items-center md:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -173,9 +173,9 @@ export function Terminal({ open, onClose }: TerminalProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: reduceMotion ? 0 : 12, scale: reduceMotion ? 1 : 0.98 }}
             transition={{ duration: 0.25 }}
-            className="flex h-[100svh] w-full flex-col overflow-hidden border border-ink/10 bg-graphite-deep font-mono text-sm md:h-[70vh] md:max-w-2xl md:rounded-xl"
+            className="dark flex h-[100svh] w-full flex-col overflow-hidden border border-line bg-graphite-deep font-mono text-sm md:h-[70vh] md:max-w-2xl md:rounded-xl [.light_&]:md:shadow-[0_24px_64px_rgb(0_0_0/0.28)]"
           >
-            <div className="flex items-center justify-between border-b border-ink/10 px-4 py-3">
+            <div className="flex items-center justify-between border-b border-line px-4 py-3">
               <span className="text-ink-faint">~/dweep</span>
               <button
                 type="button"
@@ -204,7 +204,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
             </div>
 
             {bootComplete && (
-              <div className="border-t border-ink/10 p-3">
+              <div className="border-t border-line p-3">
                 {/* Real input on desktop */}
                 <input
                   ref={inputRef}

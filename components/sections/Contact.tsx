@@ -49,7 +49,7 @@ export function Contact() {
                 target={link.href.startsWith('http') ? '_blank' : undefined}
                 rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
                 title={link.label === 'EMAIL' ? 'Email shwetdweep@gmail.com' : undefined}
-                className="group inline-flex items-center gap-2 rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition-colors duration-150 hover:border-lime/50 hover:text-lime"
+                className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-6 py-3 text-sm font-semibold text-ink transition-colors duration-150 hover:border-lime/50 hover:text-lime"
               >
                 <link.icon size={15} className="transition-transform duration-150 group-hover:translate-x-0.5" />
                 {link.label}
@@ -59,7 +59,7 @@ export function Contact() {
         </Stagger>
       </div>
 
-      <footer className="mx-auto mt-32 max-w-4xl border-t border-ink/10 pt-8">
+      <footer className="mx-auto mt-32 max-w-4xl border-t border-line pt-8">
         <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-ink-faint">
           <div>
             <p className="font-display text-base font-semibold text-ink">DWEEP SOLANKI</p>

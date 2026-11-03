@@ -21,7 +21,7 @@ interface ProjectCardProps {
  */
 export function ProjectCard({ project, onOpen }: ProjectCardProps) {
   return (
-    <div className="card-focus-ring group relative w-full cursor-pointer overflow-hidden rounded-xl border border-ink/10 bg-white/[0.02] p-6 text-left transition-all duration-200 ease-utility hover:-translate-y-1 hover:border-lime/30 active:translate-y-0">
+    <div className="card-focus-ring group relative w-full cursor-pointer overflow-hidden rounded-xl border border-line bg-card shadow-card p-6 text-left transition-all duration-200 ease-utility hover:-translate-y-1 hover:border-lime/30 active:translate-y-0">
       <span className="absolute left-0 top-6 h-8 w-0.5 origin-top scale-y-0 bg-lime transition-transform duration-200 group-hover:scale-y-100 group-active:scale-y-100" />
       <div className="flex items-center justify-between">
         <span className="font-mono text-[11px] tracking-[0.12em] text-lime">{project.index} / CASE STUDY</span>
@@ -61,7 +61,7 @@ export function ProjectCard({ project, onOpen }: ProjectCardProps) {
 
       <motion.div
         layoutId={`project-visual-${project.id}`}
-        className="relative mt-6 aspect-[16/9] w-full overflow-hidden rounded-lg border border-ink/10 bg-graphite-deep"
+        className="relative mt-6 aspect-[16/9] w-full overflow-hidden rounded-lg border border-line-strong bg-graphite-deep dark:border-line"
       >
         <Image
           src={project.image}
@@ -70,7 +70,7 @@ export function ProjectCard({ project, onOpen }: ProjectCardProps) {
           sizes="(min-width: 768px) 45vw, 90vw"
           className="object-cover transition-transform duration-300 ease-utility group-hover:scale-[1.03]"
         />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+        <div className="dark pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3">
           <span className="font-mono text-[10px] uppercase tracking-wide text-ink-faint">{project.footerNote}</span>
         </div>
       </motion.div>

@@ -28,7 +28,7 @@ export function Proof() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-14 rounded-2xl border border-amber/20 bg-gradient-to-br from-amber/[0.06] to-transparent p-8 md:p-12"
+            className="mt-14 rounded-2xl border border-amber/20 bg-gradient-to-br from-amber-fill/[0.06] to-transparent p-8 md:p-12"
           >
             <p className="font-mono text-[11px] tracking-[0.12em] text-amber">{primary.index} / RECOGNITION</p>
             <div className="mt-4 flex items-center gap-4">
@@ -58,7 +58,7 @@ export function Proof() {
         <Stagger className="mt-8 grid gap-5 md:grid-cols-3" staggerDelay={60}>
           {secondary.map((r) => (
             <StaggerItem key={r.id}>
-              <div className="h-full rounded-xl border border-ink/10 bg-white/[0.02] p-6">
+              <div className="h-full rounded-xl border border-line bg-card shadow-card p-6">
                 <p className="font-mono text-[11px] tracking-[0.12em] text-lime">{r.index} / RECOGNITION</p>
                 <h4 className="mt-3 font-display text-xl font-semibold text-ink">{r.title}</h4>
                 <p className="mt-1 text-sm text-ink-muted">{r.org}</p>
